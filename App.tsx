@@ -10,6 +10,7 @@ import NousContacterScreen from './screens/NousContacterScreen';
 import ParrainerScreen from './screens/ParrainerScreen';
 import PartagerScreen from './screens/PartagerScreen';
 import PromotionsScreen from './screens/PromotionsScreen';
+import MenuScreen from './screens/MenuScreen';
 
 const Stack = createStackNavigator();
 
@@ -60,6 +61,14 @@ function App(): React.JSX.Element {
           options={{
             headerShown: true,
             headerTitle: 'Promotions',
+          }}
+        />
+        <Stack.Screen
+          name="Menu"
+          component={MenuScreen}
+          options={{
+            headerShown: true,
+            headerTitle: 'Menu',
           }}
         />
       </Stack.Navigator>

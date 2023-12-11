@@ -6,7 +6,7 @@ import Navbar from '../components/Navbar';
 function HomeScreen({navigation}): JSX.Element {
   return (
     <SafeAreaView>
-      <Navbar />
+      <Navbar navigation={navigation} />
       <Home navigation={navigation} />
     </SafeAreaView>
   );

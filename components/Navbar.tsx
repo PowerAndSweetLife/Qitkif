@@ -3,12 +3,15 @@ import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {faBars} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 
-function Navbar(): JSX.Element {
+function Navbar({navigation}): JSX.Element {
   const [userName, setUserName] = useState('Edouk');
   return (
     <View style={styles.nav}>
       <Text style={styles.textWhite}>Bonjour {userName}</Text>
-      <Pressable>
+      <Pressable
+        onPress={() => {
+          navigation.navigate('Menu');
+        }}>
         <FontAwesomeIcon icon={faBars} style={styles.textWhite} size={25} />
       </Pressable>
     </View>
