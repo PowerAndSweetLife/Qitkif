@@ -206,11 +206,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   reformImage: {
-    width: 30,
-    height: 30,
+    width: 20,
+    height: 20,
   },
   textMenu: {
-    fontSize: 6,
+    fontSize: 8,
     fontWeight: 'bold',
   },
   pressableMenu: {

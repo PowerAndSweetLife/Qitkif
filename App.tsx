@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
-import {SafeAreaView, View} from 'react-native';
+import {SafeAreaView, Text, View} from 'react-native';
 import HomeScreen from './screens/HomeScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -11,9 +11,18 @@ import ParrainerScreen from './screens/ParrainerScreen';
 import PartagerScreen from './screens/PartagerScreen';
 import PromotionsScreen from './screens/PromotionsScreen';
 import MenuScreen from './screens/MenuScreen';
+import TrouverLivreurScreen from './screens/TrouverLivreurScreen';
+import Toast from 'react-native-toast-message';
 
 const Stack = createStackNavigator();
-
+const customHeaderTitleStyle = {
+  fontSize: 14,
+  color: 'white',
+};
+const customHeaderStyle = {
+  backgroundColor: '#3498db',
+  height: 40,
+};
 function App(): React.JSX.Element {
   return (
     <NavigationContainer>
@@ -29,6 +38,9 @@ function App(): React.JSX.Element {
           options={{
             headerShown: true,
             headerTitle: 'Notifications',
+            headerTitleStyle: customHeaderTitleStyle,
+            headerStyle: customHeaderStyle,
+            headerTintColor: 'white',
           }}
         />
         <Stack.Screen
@@ -37,6 +49,9 @@ function App(): React.JSX.Element {
           options={{
             headerShown: true,
             headerTitle: 'Nous contacter',
+            headerTitleStyle: customHeaderTitleStyle,
+            headerStyle: customHeaderStyle,
+            headerTintColor: 'white',
           }}
         />
         <Stack.Screen
@@ -44,7 +59,10 @@ function App(): React.JSX.Element {
           component={ParrainerScreen}
           options={{
             headerShown: true,
-            headerTitle: 'Parrainer',
+            headerTitle: 'Parrainage',
+            headerTitleStyle: customHeaderTitleStyle,
+            headerStyle: customHeaderStyle,
+            headerTintColor: 'white',
           }}
         />
         <Stack.Screen
@@ -53,6 +71,9 @@ function App(): React.JSX.Element {
           options={{
             headerShown: true,
             headerTitle: 'Partager',
+            headerTitleStyle: customHeaderTitleStyle,
+            headerStyle: customHeaderStyle,
+            headerTintColor: 'white',
           }}
         />
         <Stack.Screen
@@ -61,6 +82,9 @@ function App(): React.JSX.Element {
           options={{
             headerShown: true,
             headerTitle: 'Promotions',
+            headerTitleStyle: customHeaderTitleStyle,
+            headerStyle: customHeaderStyle,
+            headerTintColor: 'white',
           }}
         />
         <Stack.Screen
@@ -69,6 +93,20 @@ function App(): React.JSX.Element {
           options={{
             headerShown: true,
             headerTitle: 'Menu',
+            headerTitleStyle: customHeaderTitleStyle,
+            headerStyle: customHeaderStyle,
+            headerTintColor: 'white',
+          }}
+        />
+        <Stack.Screen
+          name="trouverLivreur"
+          component={TrouverLivreurScreen}
+          options={{
+            headerShown: true,
+            headerTitle: 'Livreur',
+            headerTitleStyle: customHeaderTitleStyle,
+            headerStyle: customHeaderStyle,
+            headerTintColor: 'white',
           }}
         />
       </Stack.Navigator>

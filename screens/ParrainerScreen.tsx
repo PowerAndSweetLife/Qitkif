@@ -1,8 +1,9 @@
 import React from 'react';
 import {Text} from 'react-native';
+import Parrainer from '../components/Parrainer';
 
-function ParrainerScreen(): JSX.Element {
-  return <Text>Parrainer screen</Text>;
+function ParrainerScreen({navigation}): JSX.Element {
+  return <Parrainer navigation={navigation} />;
 }
 
-export default ParrainerScreen ;
+export default ParrainerScreen;
