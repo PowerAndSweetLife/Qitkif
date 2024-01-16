@@ -2,15 +2,18 @@ import React, {useState} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {faBars} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {useSelector} from 'react-redux';
 
 function Navbar({navigation}): JSX.Element {
   const [userName, setUserName] = useState('Edouk');
+  const nomUser = useSelector(state => state.logged.pseudo);
+  const idUser = useSelector(state => state.logged.id);
   return (
     <View style={styles.nav}>
-      <Text style={styles.textWhite}>Bonjour {userName}</Text>
+      <Text style={styles.textWhite}>Hello {nomUser}</Text>
       <Pressable
         onPress={() => {
-          navigation.navigate('Menu');
+          navigation.navigate('Menu', {id: idUser});
         }}>
         <FontAwesomeIcon icon={faBars} style={styles.textWhite} size={25} />
       </Pressable>

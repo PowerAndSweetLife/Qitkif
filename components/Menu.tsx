@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
+  Appearance,
   Button,
   Dimensions,
   Image,
@@ -11,34 +12,88 @@ import {
   View,
 } from 'react-native';
 import {TouchableHighlight} from 'react-native-gesture-handler';
+import {useSelector} from 'react-redux';
+import {api_url, base_url} from '../helpers/url';
+import axios from 'axios';
+import {useRoute} from '@react-navigation/native';
+import {colors} from '../helpers/colors';
 const maxHeight = Dimensions.get('window').height;
 const MONEY_CURRENCY = 'FCFA';
-
+const modeApp = Appearance.getColorScheme();
 function Menu({navigation}): JSX.Element {
+  const route = useRoute();
   const [reductionPrice, setReductionPrice] = useState(0);
+  const idUser = route.params.id;
+  const monEtatRedux = useSelector(state => console.log(state)); // fangalana reducer
+
+  const getReduction = async () => {
+    try {
+      const response = await fetch(
+        base_url('AllControllers/getAllReducation/' + idUser),
+      );
+      const jsonData = await response.json();
+      setReductionPrice(jsonData[0]);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      getReduction();
+    }, 1000);
+
+    // Clean up the interval on component unmount
+    return () => clearInterval(intervalId);
+  });
   const doNavigation = nav => {
     switch (nav) {
       case 'TrouverLivreur':
-        navigation.navigate('trouverLivreur');
+        navigation.navigate('trouverLivreur', {id: idUser});
         break;
       case 'ServiceLivreur':
+        navigation.navigate('serviceLivreur');
         break;
       case 'Accueil':
         navigation.navigate('Home');
         break;
       case 'compte':
+        navigation.navigate('Profil', {me: true});
         break;
       case 'moyenPaiement':
+        navigation.navigate('AddPaiement');
         break;
       case 'historiqueTransactions':
+        navigation.navigate('Historique');
         break;
       case 'transactions':
+        navigation.navigate('Encours', {id: idUser});
         break;
       case 'promotions':
+        navigation.navigate('Promotion');
         break;
       case 'code':
+        navigation.navigate('ObtenirCode', {id: idUser});
         break;
       case 'serviceClient':
+        navigation.navigate('ServiceClient');
+        break;
+      case 'quitter':
+        axios
+          .get(base_url('logout'))
+          .then(response => {
+            if (response.data.success) {
+              navigation.navigate('Welcome');
+            }
+          })
+          .catch(error => {
+            if (error.response.status === 403) {
+              navigation.navigate('Welcome');
+            }
+          })
+          .finally(() => {
+            // this.setState({logoutLoading: false});
+          });
+        // navigation.navigate('Welcome');
         break;
     }
   };
@@ -175,6 +230,18 @@ function Menu({navigation}): JSX.Element {
         />
         <Text style={styles.textContainer}>{'  '}Service client</Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          doNavigation('quitter');
+        }}
+        style={styles.container}>
+        <Image
+          style={styles.image}
+          resizeMode="contain"
+          source={require('../assets/icons/bouton-fermer.png')}
+        />
+        <Text style={styles.textContainer}>{'  '}Quitter</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -183,25 +250,27 @@ const styles = StyleSheet.create({
   scroller: {
     paddingLeft: 5,
     paddingRight: 5,
-    marginTop: 2,
+    paddingTop: 2,
     height: maxHeight - 30,
+    backgroundColor: modeApp === 'dark' ? colors.dark : colors.light,
   },
   container: {
     flexDirection: 'row',
     marginTop: 2,
     marginBottom: 2,
-    height: 40,
+    height: 60,
     borderRadius: 5,
     padding: 5,
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
     alignItems: 'center',
+    backgroundColor: modeApp === 'dark' ? colors.dark : colors.light,
   },
   textContainer: {
-    fontSize: 12,
+    fontSize: 18,
   },
   image: {
-    width: 25,
-    height: 25,
+    width: 30,
+    height: 30,
   },
   reductionbox: {
     padding: 10,
@@ -209,16 +278,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
     width: '100%',
-    height: 100,
+    height: 150,
     borderWidth: 1,
     borderColor: '#0275d8',
   },
   reductionText: {
-    fontSize: 14,
+    fontSize: 17,
   },
   money: {
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 25,
   },
   customBtn: {
     backgroundColor: '#42df42',
@@ -229,6 +298,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
+    fontSize: 18,
   },
   customBtnText: {
     color: 'white',

@@ -1,14 +1,46 @@
-import {View, Text, Pressable, StyleSheet, Image, Alert} from 'react-native';
-import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  Pressable,
+  StyleSheet,
+  Image,
+  Alert,
+  Clipboar,
+  Appearance,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import Toast from 'react-native-toast-message';
+import {base_url} from '../helpers/url';
+import {useRoute} from '@react-navigation/native';
 import Clipboard from '@react-native-clipboard/clipboard';
-
+import {colors} from '../helpers/colors';
+const modeApp = Appearance.getColorScheme();
 function Parrainer({navigation}): JSX.Element {
-  const [code, setCode] = useState('vbjsi9x');
+  const route = useRoute();
+  const [code, setCode] = useState('');
+  const idUser = route.params.id;
   const copyToClipBoard = () => {
+    Clipboard.setString(code);
     const textCode = code;
     Alert.alert('Succès', 'Le code est copié avec succès !');
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          base_url('AllControllers/getCodeParrainer/' + idUser),
+        );
+        const jsonData = await response.json();
+        setCode(jsonData[0]);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.container1}>
@@ -39,6 +71,8 @@ const styles = StyleSheet.create({
   container: {
     paddingLeft: 10,
     paddingRight: 10,
+    flex: 1,
+    backgroundColor: modeApp === 'dark' ? colors.dark : colors.light,
   },
   container1: {
     flexDirection: 'row',
